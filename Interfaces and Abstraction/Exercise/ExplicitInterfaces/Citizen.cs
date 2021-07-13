@@ -19,14 +19,14 @@ namespace ExplicitInterfaces
 
         public int Age { get; }
 
-        public string GetName()
+        string IPerson.GetName()
         {
             return Name;
         }
 
         string IResident.GetName()
         {
-            return $"Mr/Ms/Mrs {GetName()}";
+            return $"Mr/Ms/Mrs {Name}";
         }
     }
 }

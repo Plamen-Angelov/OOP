@@ -18,7 +18,7 @@ namespace ExplicitInterfaces
                 string name = line[0];
                 string country = line[1];
                 int age = int.Parse(line[2]);
-                Citizen citizen = new Citizen(name, country, age);
+                IPerson citizen = new Citizen(name, country, age);
                 Console.WriteLine($"{citizen.GetName()}");
                 IResident resident = new Citizen(name, country, age);
                 Console.WriteLine($"{resident.GetName()}");

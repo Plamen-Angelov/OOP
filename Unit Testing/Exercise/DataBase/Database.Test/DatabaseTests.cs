@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace Tests
 {
+    using Database;
     using System;
 
     public class DatabaseTests

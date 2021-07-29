@@ -1,4 +1,4 @@
-//using FakeAxeAndDummy;
+using FakeAxeAndDummy;
 using Moq;
 using NUnit.Framework;
 

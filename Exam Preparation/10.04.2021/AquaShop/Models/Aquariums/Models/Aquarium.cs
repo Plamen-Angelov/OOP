@@ -71,14 +71,19 @@ namespace AquaShop.Models.Aquariums.Models
 
         public string GetInfo()
         {
-            if (Fish.Count == 0)
-            {
-                return "none";
-            }
+            
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"{ Name} ({GetType().Name}):");
-            sb.AppendLine($"Fish: {new List<string>(Fish.Select(f => f.Name))}");
+            if (Fish.Count == 0)
+            {
+                sb.AppendLine("Fish: none");
+            }
+            else
+            {
+                sb.AppendLine($"Fish: {string.Join(", ", new List<string>(Fish.Select(f => f.Name)))}");
+
+            }
             sb.AppendLine($"Decorations: {Decorations.Count}");
             sb.AppendLine($"Comfort: {Comfort}");
 

@@ -74,11 +74,11 @@ namespace WarCroft.Core
 		{
 			string characterName = args[0];
 
-			Character character = characterParty.First(c => c.Name == characterName);
+			Character character = characterParty.FirstOrDefault(c => c.Name == characterName);
 
 			if (character == null)
             {
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, characterName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, characterName));
             }
 
             if (itemPool.Count == 0)
@@ -87,10 +87,11 @@ namespace WarCroft.Core
             }
 
 			Item item = itemPool.Last();
+			itemPool.Remove(item);
 
 			character.Bag.AddItem(item);
 
-			return string.Format(SuccessMessages.PickUpItem, characterName, item.GetType().Name);
+			return string.Format(string.Format(SuccessMessages.PickUpItem, characterName, item.GetType().Name));
 		}
 
 		public string UseItem(string[] args)
@@ -98,16 +99,16 @@ namespace WarCroft.Core
 			string characterName = args[0];
 			string itemName = args[1];
 
-			Character character = characterParty.First(c => c.Name == characterName);
+			Character character = characterParty.FirstOrDefault(c => c.Name == characterName);
 			Item item = character.Bag.GetItem(itemName);
 
             if (character == null)
             {
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, characterName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, characterName));
             }
 
 			character.UseItem(item);
-			return string.Format(SuccessMessages.UsedItem, characterName, itemName);
+			return string.Format(string.Format(SuccessMessages.UsedItem, characterName, itemName));
 		}
 
 		public string GetStats()
@@ -144,14 +145,14 @@ namespace WarCroft.Core
 
             if (attacker == null)
             {
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, attackerName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, attackerName));
             }
 
 			Character receiver = characterParty.FirstOrDefault(c => c.Name == receiverName);
 
 			if (receiver == null)
 			{
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, receiverName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, receiverName));
 			}
 
             if (attacker.GetType().Name == "Priest")
@@ -164,9 +165,11 @@ namespace WarCroft.Core
 
 			StringBuilder sb = new StringBuilder();
 
-			sb.AppendLine($"{attackerName} attacks {receiverName} for {attackerWarrior.AbilityPoints} hit points!");
-			sb.AppendLine($"{receiverName} has {receiver.Health}/{receiver.BaseHealth} HP " +
+			sb.AppendLine($"{attackerName} attacks {receiverName} for {attackerWarrior.AbilityPoints} hit points! " +
+				$"{receiverName} has {receiver.Health}/{receiver.BaseHealth} HP " +
 				$"and {receiver.Armor}/{receiver.BaseArmor} AP left!");
+			//sb.AppendLine($"{receiverName} has {receiver.Health}/{receiver.BaseHealth} HP " +
+			//	$"and {receiver.Armor}/{receiver.BaseArmor} AP left!");
 
             if (receiver.IsAlive == false)
             {
@@ -185,19 +188,19 @@ namespace WarCroft.Core
 
             if (healer == null)
             {
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, healerName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, healerName));
             }
 
 			Character receiver = characterParty.FirstOrDefault(c => c.Name == receiverName);
 
 			if (receiver == null)
 			{
-				throw new ArgumentException(ExceptionMessages.CharacterNotInParty, healerName);
+				throw new ArgumentException(string.Format(ExceptionMessages.CharacterNotInParty, healerName));
 			}
 
             if (healer.GetType().Name == "Warrior")
             {
-				throw new ArgumentException(ExceptionMessages.HealerCannotHeal, healerName);
+				throw new ArgumentException(string.Format(ExceptionMessages.HealerCannotHeal, healerName));
             }
 
 			Priest healerPriest = healer as Priest;

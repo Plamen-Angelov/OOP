@@ -44,7 +44,13 @@ namespace WarCroft.Entities.Characters.Contracts
                     IsAlive = false;
                }
 
-               health = Math.Min(value, baseHealth);
+                //if (value > BaseHealth)
+                //{
+                //    value = BaseHealth;
+                //}
+
+                //health = Math.Min(value, baseHealth);
+                health = value;
             }
         }
 
@@ -60,7 +66,7 @@ namespace WarCroft.Entities.Characters.Contracts
             {
                 if (value < 0)
                 {
-                    armor = 0;
+                   armor = 0;
                 }
                 armor = value;
             }
@@ -107,6 +113,7 @@ namespace WarCroft.Entities.Characters.Contracts
 
             if (Health <= 0)
             {
+                Health = 0;
                 IsAlive = false;
             }
         }

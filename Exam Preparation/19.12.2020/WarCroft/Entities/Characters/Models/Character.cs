@@ -116,6 +116,8 @@ namespace WarCroft.Entities.Characters.Contracts
             EnsureAlive();
 
             item.AffectCharacter(this);
+
+
         }
     }
 }

@@ -9,8 +9,6 @@ namespace WarCroft.Entities.Characters.Contracts
     {
 		private string name;
 		private double health;
-        private double baseHealth;
-        private double baseArmor;
         private double armor;
 
         public string Name 
@@ -44,12 +42,6 @@ namespace WarCroft.Entities.Characters.Contracts
                     IsAlive = false;
                }
 
-                //if (value > BaseHealth)
-                //{
-                //    value = BaseHealth;
-                //}
-
-                //health = Math.Min(value, baseHealth);
                 health = value;
             }
         }

@@ -27,8 +27,6 @@ namespace WarCroft.Core
 			string characterType = args[0];
 			string name = args[1];
 
-			//Character character = null;
-
             if (characterType == "Warrior")
             {
 				Warrior character = new Warrior(name);
@@ -44,7 +42,6 @@ namespace WarCroft.Core
 				throw new ArgumentException(string.Format(ExceptionMessages.InvalidCharacterType, characterType));
             }
 
-			//characterParty.Add(character);
 			return string.Format(SuccessMessages.JoinParty, name);
 		}
 
@@ -168,8 +165,6 @@ namespace WarCroft.Core
 			sb.AppendLine($"{attackerName} attacks {receiverName} for {attackerWarrior.AbilityPoints} hit points! " +
 				$"{receiverName} has {receiver.Health}/{receiver.BaseHealth} HP " +
 				$"and {receiver.Armor}/{receiver.BaseArmor} AP left!");
-			//sb.AppendLine($"{receiverName} has {receiver.Health}/{receiver.BaseHealth} HP " +
-			//	$"and {receiver.Armor}/{receiver.BaseArmor} AP left!");
 
             if (receiver.IsAlive == false)
             {

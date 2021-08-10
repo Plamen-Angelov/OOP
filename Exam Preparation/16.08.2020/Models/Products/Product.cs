@@ -102,7 +102,7 @@ namespace OnlineShop.Models.Products
 
         public override string ToString()
         {
-            return string.Format(SuccessMessages.ProductToString, Price, GetType().Name, Manufacturer, Model, Id);
+            return string.Format(SuccessMessages.ProductToString, OverallPerformance, Price, GetType().Name, Manufacturer, Model, Id);
         }
     }
 }

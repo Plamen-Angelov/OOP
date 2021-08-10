@@ -2,8 +2,8 @@
 using OnlineShop.Models.Products.Peripherals;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Text;
 
 namespace OnlineShop.Models.Products.Computers
 {
@@ -26,13 +26,13 @@ namespace OnlineShop.Models.Products.Computers
             }
             private set
             {
-                if (Components.Count == 0)
+                if (components.Count == 0)
                 {
                     overallPerformance = value;
                 }
                 else
                 {
-                    overallPerformance = value + Components.Average(c => c.OverallPerformance);
+                    overallPerformance = value + components.Average(c => c.OverallPerformance);
                 }
             }
         }
@@ -45,8 +45,8 @@ namespace OnlineShop.Models.Products.Computers
             }
             set
             {
-                decimal componentsPrice = Components.Sum(c => c.Price);
-                decimal peripheralsPrice = Peripherals.Sum(p => p.Price);
+                decimal componentsPrice = components.Sum(c => c.Price);
+                decimal peripheralsPrice = peripherals.Sum(p => p.Price);
 
                 price = value + componentsPrice + peripheralsPrice;
             }
@@ -71,7 +71,7 @@ namespace OnlineShop.Models.Products.Computers
 
         public void AddPeripheral(IPeripheral peripheral)
         {
-            if (Peripherals.Any(c => c.GetType().Name == peripheral.GetType().Name))
+            if (peripherals.Any(c => c.GetType().Name == peripheral.GetType().Name))
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.ExistingPeripheral,
                     peripheral.GetType().Name, this.GetType().Name, this.Id));
@@ -110,21 +110,27 @@ namespace OnlineShop.Models.Products.Computers
 
         public override string ToString()
         {
-            return base.ToString();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine( base.ToString());
 
-            Console.WriteLine($" Components ({Components.Count}):");
-            foreach (var component in Components)
+            if (Components.Count > 0)
             {
-                Console.WriteLine($"  {component.GetType().Name}");
+                sb.AppendLine($" Components ({Components.Count}):");
+                foreach (var component in Components)
+                {
+                    sb.AppendLine($"  {component.GetType().Name}");
+                }
             }
 
-            string.Format(SuccessMessages.ComputerPeripheralsToString, Peripherals.Count,
-                Peripherals.Average(p => p.OverallPerformance));
+            sb.AppendLine(string.Format(SuccessMessages.ComputerPeripheralsToString, peripherals.Count,
+                peripherals.Average(p => p.OverallPerformance)));
 
-            foreach (var peripheral in Peripherals)
+            foreach (var peripheral in peripherals)
             {
-                Console.WriteLine(  Peripherals.GetType().Name);
+                sb.AppendLine(  peripherals.GetType().Name);
             }
+
+            return sb.ToString().TrimEnd();
         }
     }
 }

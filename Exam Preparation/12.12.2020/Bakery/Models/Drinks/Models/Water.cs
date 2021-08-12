@@ -1,11 +1,11 @@
-﻿
+﻿using System;
+
 namespace Bakery.Models.Drinks.Models
 {
     public class Water : Drink
     {
-        private const decimal WaterPrice = 1.50M;
         public Water(string name, int portion, string brand) 
-            : base(name, portion, WaterPrice, brand)
+            : base(name, portion, 1.50M, brand)
         {
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Bakery.Models.Drinks.Contracts;
+using Bakery.Utilities.Messages;
 using System;
 
 namespace Bakery.Models.Drinks.Models
@@ -20,7 +21,7 @@ namespace Bakery.Models.Drinks.Models
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Name cannot be null or white space!");
+                    throw new ArgumentException(ExceptionMessages.InvalidName);
                 }
                 name = value;
             }
@@ -36,7 +37,7 @@ namespace Bakery.Models.Drinks.Models
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("Portion cannot be less or equal to zero");
+                    throw new ArgumentException(ExceptionMessages.InvalidPortion);
                 }
                 portion = value;
             }
@@ -52,7 +53,7 @@ namespace Bakery.Models.Drinks.Models
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("Price cannot be less or equal to zero!");
+                    throw new ArgumentException(ExceptionMessages.InvalidPrice);
                 }
                 price = value;
             }
@@ -68,7 +69,7 @@ namespace Bakery.Models.Drinks.Models
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Brand cannot be null or white space!");
+                    throw new ArgumentException(ExceptionMessages.InvalidBrand);
                 }
                 brand = value;
             }

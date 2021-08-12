@@ -1,6 +1,7 @@
 ﻿using Bakery.Models.BakedFoods.Contracts;
 using Bakery.Models.Drinks.Contracts;
 using Bakery.Models.Tables.Contracts;
+using Bakery.Utilities.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,12 @@ namespace Bakery.Models.Tables.Models
 {
     public abstract class Table : ITable
     {
+        private readonly ICollection<IBakedFood> foodOrders;
+        private readonly ICollection<IDrink> drinkOrders;
         private int capacity;
         private int numberOfPeople;
-        private decimal price;
 
-        private ICollection<IBakedFood> FoodOrders;
-        private ICollection<IDrink> DrinkOrders;
-
-        public int TableNumber { get; }
+        public int TableNumber { get; private set; }
 
         public int Capacity
         {
@@ -29,7 +28,7 @@ namespace Bakery.Models.Tables.Models
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Capacity has to be greater than 0");
+                    throw new ArgumentException(ExceptionMessages.InvalidTableCapacity);
                 }
                 capacity = value;
             }
@@ -43,82 +42,72 @@ namespace Bakery.Models.Tables.Models
             }
             private set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
-                    throw new ArgumentException("Cannot place zero or less people!");
+                    throw new ArgumentException(ExceptionMessages.InvalidNumberOfPeople);
                 }
                 numberOfPeople = value;
             }
         }
 
-        public decimal PricePerPerson { get; }
+        public decimal PricePerPerson { get; private set; }
 
         public bool IsReserved { get; private set; }
 
-        public decimal Price
-        {
-            get
-            {
-                return price;
-            }
-            private set
-            {
-                price = NumberOfPeople * PricePerPerson;
-            }
-        }
+        public decimal Price => PricePerPerson * NumberOfPeople;
+            
 
         public Table(int tableNumber, int capacity, decimal pricePerPerson)
         {
-            FoodOrders = new List<IBakedFood>();
-            DrinkOrders = new List<IDrink>();
             TableNumber = tableNumber;
             Capacity = capacity;
             PricePerPerson = pricePerPerson;
+            foodOrders = new List<IBakedFood>();
+            drinkOrders = new List<IDrink>();
         }
 
-        public void Clear()
+        public void Reserve(int numberOfPeople)
         {
-            FoodOrders.Clear();
-            DrinkOrders.Clear();
-            IsReserved = false;
-            numberOfPeople = 0;
+            NumberOfPeople = numberOfPeople;
+            IsReserved = true;
+        }
+
+        public void OrderFood(IBakedFood food)
+        {
+            foodOrders.Add(food);
+        }
+
+        public void OrderDrink(IDrink drink)
+        {
+            drinkOrders.Add(drink);
         }
 
         public decimal GetBill()
         {
-            decimal amountForFoof = FoodOrders.Sum(f => f.Price);
-            decimal amountForDrinks = DrinkOrders.Sum(d => d.Price);
-            decimal tablePrice = PricePerPerson * NumberOfPeople;
-            decimal bill = amountForFoof + amountForDrinks + tablePrice;
+            decimal foodBill = foodOrders.Sum(f => f.Price);
+            decimal drinkBill = drinkOrders.Sum(d => d.Price);
 
-            return bill;
+            return foodBill + drinkBill + Price;
+        }
+
+        public void Clear()
+        {
+            foodOrders.Clear();
+            drinkOrders.Clear();
+            NumberOfPeople = 0;
+            IsReserved = false;
         }
 
         public string GetFreeTableInfo()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Table: {TableNumber}");
+
+            sb.AppendLine($"Table: { TableNumber}");
             sb.AppendLine($"Type: {GetType().Name}");
             sb.AppendLine($"Capacity: {Capacity}");
-            sb.AppendLine($"Price per Person: {PricePerPerson}");
+            sb.AppendLine($"Price per Person: {PricePerPerson:F2}");
 
             return sb.ToString().TrimEnd();
-        }
-
-        public void OrderDrink(IDrink drink)
-        {
-            DrinkOrders.Add(drink);
-        }
-
-        public void OrderFood(IBakedFood food)
-        {
-            FoodOrders.Add(food);
-        }
-
-        public void Reserve(int numberOfPeople)
-        {
-            IsReserved = true;
-            NumberOfPeople = numberOfPeople;
         }
     }
 }

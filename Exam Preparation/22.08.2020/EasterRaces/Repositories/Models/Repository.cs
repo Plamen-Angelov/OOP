@@ -5,7 +5,11 @@ namespace EasterRaces.Repositories.Models
 {
     public abstract class Repository<T> : IRepository<T>
     {
-        public List<T> Models { get; set; } = new List<T>();
+        public ICollection<T> Models { get; }
+        public Repository()
+        {
+            Models = new List<T>();
+        }
 
         public void Add(T model)
         {
@@ -14,9 +18,7 @@ namespace EasterRaces.Repositories.Models
 
         public IReadOnlyCollection<T> GetAll()
         {
-            IReadOnlyCollection<T> models = new List<T>();
-            models = Models;
-            return models;
+            return Models as IReadOnlyCollection<T>;
         }
 
         public abstract T GetByName(string name);

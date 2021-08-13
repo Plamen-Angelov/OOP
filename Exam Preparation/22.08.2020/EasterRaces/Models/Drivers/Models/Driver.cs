@@ -8,9 +8,9 @@ namespace EasterRaces.Models.Drivers.Models
     public class Driver : IDriver
     {
         private string name;
-        private bool canParticitate;
+        private bool canParticipate;
 
-        public string Name 
+        public string Name
         {
             get
             {
@@ -25,26 +25,25 @@ namespace EasterRaces.Models.Drivers.Models
                 name = value;
             }
         }
-
         public ICar Car { get; private set; }
 
-        public int NumberOfWins { get; private set; }
+        public int NumberOfWins { get; private set; } = 0;
 
         public bool CanParticipate
         {
             get
             {
-                return canParticitate;
+                return canParticipate;
             }
             private set
             {
                 if (Car == null)
                 {
-                    canParticitate = false;
+                    canParticipate = false;
                 }
                 else
                 {
-                    canParticitate = true;
+                    canParticipate = true;
                 }
             }
         }
@@ -58,9 +57,8 @@ namespace EasterRaces.Models.Drivers.Models
         {
             if (car == null)
             {
-                throw new ArgumentNullException(ExceptionMessages.CarInvalid);
+                throw new ArgumentException(ExceptionMessages.CarInvalid);
             }
-
             Car = car;
             CanParticipate = true;
         }

@@ -1,8 +1,6 @@
 ﻿using EasterRaces.Models.Cars.Contracts;
 using EasterRaces.Utilities.Messages;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EasterRaces.Models.Cars.Models
 {
@@ -13,7 +11,7 @@ namespace EasterRaces.Models.Cars.Models
         private int minHorsePower;
         private int maxHorsePower;
 
-        public string Model 
+        public string Model
         {
             get
             {
@@ -29,7 +27,7 @@ namespace EasterRaces.Models.Cars.Models
             }
         }
 
-        public int HorsePower
+        public  int HorsePower
         {
             get
             {
@@ -44,17 +42,16 @@ namespace EasterRaces.Models.Cars.Models
                 horsePower = value;
             }
         }
-
-
-        public double CubicCentimeters { get; private set; }
+        public double CubicCentimeters { get; }
 
         public Car(string model, int horsePower, double cubicCentimeters, int minHorsePower, int maxHorsePower)
         {
-            Model = model;
-            CubicCentimeters = cubicCentimeters;
             this.minHorsePower = minHorsePower;
             this.maxHorsePower = maxHorsePower;
+            Model = model;
             HorsePower = horsePower;
+            CubicCentimeters = cubicCentimeters;
+           
         }
 
         public double CalculateRacePoints(int laps)

@@ -12,7 +12,7 @@ namespace EasterRaces.Models.Races.Models
         private int laps;
         private List<IDriver> drivers = new List<IDriver>();
 
-        public string Name 
+        public string Name
         {
             get
             {
@@ -28,7 +28,7 @@ namespace EasterRaces.Models.Races.Models
             }
         }
 
-        public int Laps 
+        public int Laps
         {
             get
             {
@@ -44,13 +44,15 @@ namespace EasterRaces.Models.Races.Models
             }
         }
 
-        public IReadOnlyCollection<IDriver> Drivers { get; private set; } = new List<IDriver>();
+        public IReadOnlyCollection<IDriver> Drivers { get; private set; }
 
         public Race(string name, int laps)
         {
             Name = name;
             Laps = laps;
+            Drivers = new List<IDriver>();
         }
+
 
         public void AddDriver(IDriver driver)
         {
@@ -58,15 +60,16 @@ namespace EasterRaces.Models.Races.Models
             {
                 throw new ArgumentNullException(ExceptionMessages.DriverInvalid);
             }
-            if (!driver.CanParticipate)
+
+            if (driver.CanParticipate == false)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.DriverNotParticipate, driver.Name));
             }
+
             if (drivers.Contains(driver))
             {
-                throw new ArgumentNullException(string.Format(ExceptionMessages.DriverAlreadyAdded,
-                    driver.Name,
-                    this.GetType().Name));
+                throw new ArgumentException(string.Format(ExceptionMessages.DriverAlreadyAdded, 
+                    driver.Name, Name));
             }
 
             drivers.Add(driver);
